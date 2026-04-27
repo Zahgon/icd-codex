@@ -46,16 +46,7 @@ class Icd2Vec:
             icd_hierarchy (nx.Graph): Graph of ICD hierarchy
             kwargs: arguments passed to the Node2Vec.fit
         """
-        self.node2vec = Node2Vec(
-            icd_hierarchy,
-            dimensions=self.num_embedding_dimensions,
-            workers=self.workers,
-            quiet=True,
-            **self.node2vec_kwargs
-        ).fit(window=self.window, min_count=1, **kwargs)
-        self.icd_codes = icd_codes
-        self.nn = NearestNeighbors(n_neighbors=1)
-        self.nn.fit(self.to_vec(self.icd_codes))
+        pass
 
     def to_vec(self, icd_codes: Sequence[str]) -> np.ndarray:
         """encode ICD code(s) into a matrix of continuously-valued representations of
@@ -70,9 +61,7 @@ class Icd2Vec:
         Returns:
             np.ndarray: continuously-valued representations if ICD codes
         """
-        if not self.node2vec:
-            raise ValueError("model needs to be fit before")
-        return np.stack([self.node2vec.wv.get_vector(icd_code) for icd_code in icd_codes])
+        pass
 
     def to_code(self, vecs: Union[Sequence[Sequence], np.ndarray]) -> Sequence[str]:
         """decode continuous representation of ICD code(s) into the code itself
@@ -83,5 +72,4 @@ class Icd2Vec:
         Returns:
             Sequence[str]: ICD code(s)
         """
-        _, nbr_idxs = self.nn.kneighbors(vecs)
-        return [self.icd_codes[i] for i in nbr_idxs.reshape(-1)]
+        pass
